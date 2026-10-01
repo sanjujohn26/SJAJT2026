@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Ashley - A Special Journey</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        roseGold: '#B76E79',
+                        pastelPink: '#FFD1DC',
+                        softYellow: '#FFF9A6',
+                        romanticDark: '#2A0813',
+                        deepRose: '#8B1E3F',
+                        goldAccent: '#F39C12'
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s infinite',
+                        'bounce-gentle': 'bounce 2s infinite',
+                        'float': 'float 4s ease-in-out infinite',
+                        'glow': 'glow 2.5s ease-in-out infinite alternate',
+                        'sparkle': 'sparkle 2s ease-in-out infinite',
+                        'kiss-girl': 'kissGirl 1.8s ease-in-out infinite alternate',
+                        'kiss-boy': 'kissBoy 1.8s ease-in-out infinite alternate',
+                        'heart-pop': 'heartPop 1.2s ease-out infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        },
+                        glow: {
+                            '0%': { filter: 'drop-shadow(0 0 8px rgba(255, 234, 0, 0.4))' },
+                            '100%': { filter: 'drop-shadow(0 0 25px rgba(255, 215, 0, 0.8))' },
+                        },
+                        sparkle: {
+                            '0%, 100%': { opacity: '0.3', transform: 'scale(0.8)' },
+                            '50%': { opacity: '1', transform: 'scale(1.2)' }
+                        },
+                        kissGirl: {
+                            '0%, 100%': { transform: 'translateX(0) rotate(0deg)' },
+                            '50%': { transform: 'translateX(28px) rotate(8deg)' }
+                        },
+                        kissBoy: {
+                            '0%, 100%': { transform: 'translateX(0) rotate(0deg)' },
+                            '50%': { transform: 'translateX(-28px) rotate(-8deg)' }
+                        },
+                        heartPop: {
+                            '0%': { transform: 'scale(0.5) translateY(0)', opacity: '0' },
+                            '50%': { transform: 'scale(1.3) translateY(-25px)', opacity: '1' },
+                            '100%': { transform: 'scale(1.6) translateY(-55px)', opacity: '0' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Great+Vibes&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1f040d 0%, #3a0a1a 50%, #150208 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .font-cursive {
+            font-family: 'Great Vibes', cursive;
+        }
+
+        .font-game {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Glassmorphism containers */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* Shake animation for input errors */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-12px); }
+            40%, 80% { transform: translateX(12px); }
+        }
+
+        .animate-shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.6) !important;
+        }
+
+        /* Background hearts canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Floating Rose Petals overlay */
+        #petals-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* Game Canvas Styles */
+        #game-canvas {
+            background-color: rgba(20, 5, 12, 0.95);
+            border: 4px solid #f472b6;
+            box-shadow: 0 0 25px rgba(244, 114, 182, 0.4);
+            border-radius: 16px;
+        }
+
+        /* Custom Scrollbar for Prize List */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(244, 114, 182, 0.5);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen relative p-4 select-none">
+
+    <!-- Floating Music Toggle Control -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="music-toggle-btn" onclick="toggleMusic()" class="flex items-center space-x-2 px-4 py-2.5 rounded-full glass-card bg-pink-500/20 hover:bg-pink-500/30 border border-pink-300/40 text-pink-200 text-xs md:text-sm font-semibold shadow-lg transition-all transform hover:scale-105 active:scale-95">
+            <i id="music-icon" class="fa-solid fa-music animate-pulse text-yellow-300"></i>
+            <span id="music-text">Music: ON</span>
+        </button>
+    </div>
+
+    <!-- Hidden YouTube Audio Player -->
+    <div class="hidden" aria-hidden="true">
+        <div id="youtube-player"></div>
+    </div>
+
+    <!-- Background Canvas for Floating Glowing Hearts -->
+    <canvas id="bg-canvas"></canvas>
+    <!-- Overlay Canvas for Rose Petals on Screen 4/5 -->
+    <canvas id="petals-canvas"></canvas>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="relative z-10 w-full max-w-xl mx-auto flex flex-col items-center justify-center">
+
+        <!-- SCREEN 1: Name Verification -->
+        <section id="screen-1" class="w-full glass-card rounded-3xl p-8 text-center transition-all duration-700 ease-in-out transform">
+            <div class="mb-6 inline-block p-4 rounded-full bg-rose-500/20 text-pink-300 animate-bounce-gentle">
+                <i class="fa-solid fa-heart text-4xl"></i>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3 text-pink-200">Welcome Secret Guest</h1>
+            <p class="text-pink-100/80 mb-6 text-sm md:text-base">Please verify your identity to proceed into Sanju's world ❤</p>
+            
+            <div class="space-y-4">
+                <div class="relative">
+                    <label for="name-input" class="block text-left text-xs text-pink-300 font-semibold mb-1 ml-1 uppercase tracking-wider">Please Enter Your Full Name ( First Middle Last)</label>
+                    <input type="text" id="name-input" 
+                           placeholder="First Middle Last..." 
+                           class="w-full px-5 py-4 rounded-2xl bg-black/40 border-2 border-pink-400/40 text-white placeholder-pink-300/40 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-500/50 transition-all text-center text-lg font-medium"
+                           autocomplete="off">
+                </div>
+                <p id="error-1" class="text-red-400 text-sm h-5 font-semibold opacity-0 transition-opacity duration-300"></p>
+                
+                <button onclick="checkName()" class="w-full py-4 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-bold rounded-2xl shadow-lg hover:shadow-pink-500/40 transition-all transform active:scale-95 flex items-center justify-center space-x-2 text-lg">
+                    <span>Unlock Heart</span>
+                    <i class="fa-solid fa-lock"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 2: Who Do You Love? -->
+        <section id="screen-2" class="w-full glass-card rounded-3xl p-8 text-center hidden transition-all duration-700 ease-in-out transform">
+            <div class="mb-6 inline-block p-4 rounded-full bg-pink-500/20 text-pink-300 animate-pulse">
+                <i class="fa-solid fa-shield-heart text-4xl"></i>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-3 text-pink-200">One More Secret...</h2>
+            <p class="text-pink-100/80 mb-6 text-sm md:text-base">Answer truth from your heart!</p>
+            
+            <div class="space-y-4">
+                <div class="relative">
+                    <label for="love-input" class="block text-center text-lg text-pink-200 font-semibold mb-3">Who Do You Love?</label>
+                    <input type="text" id="love-input" 
+                           placeholder="Type the special name..." 
+                           class="w-full px-5 py-4 rounded-2xl bg-black/40 border-2 border-pink-400/40 text-white placeholder-pink-300/40 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-500/50 transition-all text-center text-lg font-medium"
+                           autocomplete="off">
+                </div>
+                <p id="error-2" class="text-red-400 text-sm h-5 font-semibold opacity-0 transition-opacity duration-300"></p>
+                
+                <button onclick="checkLove()" class="w-full py-4 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-bold rounded-2xl shadow-lg hover:shadow-pink-500/40 transition-all transform active:scale-95 flex items-center justify-center space-x-2 text-lg">
+                    <span>Confirm Love</span>
+                    <i class="fa-solid fa-heart-circle-check"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 3: Animated Mascot Welcome -->
+        <section id="screen-3" class="w-full glass-card rounded-3xl p-8 text-center hidden transition-all duration-700 ease-in-out transform">
+            <div class="relative w-48 h-48 mx-auto mb-4 animate-float">
+                <svg viewBox="0 0 200 200" class="w-full h-full filter drop-shadow-lg">
+                    <!-- Ears -->
+                    <circle cx="55" cy="55" r="28" fill="#F4A261"/>
+                    <circle cx="55" cy="55" r="16" fill="#E76F51"/>
+                    <circle cx="145" cy="55" r="28" fill="#F4A261"/>
+                    <circle cx="145" cy="55" r="16" fill="#E76F51"/>
+                    <!-- Head -->
+                    <circle cx="100" cy="100" r="65" fill="#F4A261"/>
+                    <!-- Muzzle -->
+                    <ellipse cx="100" cy="115" rx="28" ry="22" fill="#FFE8D6"/>
+                    <ellipse cx="100" cy="104" rx="10" ry="7" fill="#2B2D42"/>
+                    <!-- Mouth line -->
+                    <path d="M100 111 L100 120 M92 120 Q100 126 108 120" stroke="#2B2D42" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    <!-- Cute Cheeks -->
+                    <circle cx="62" cy="112" r="10" fill="#FFB5A7" opacity="0.8"/>
+                    <circle cx="138" cy="112" r="10" fill="#FFB5A7" opacity="0.8"/>
+                    <!-- Sparkle Eyes -->
+                    <ellipse cx="73" cy="90" rx="8" ry="11" fill="#2B2D42"/>
+                    <circle cx="71" cy="86" r="3" fill="#FFFFFF"/>
+                    <ellipse cx="127" cy="90" rx="8" ry="11" fill="#2B2D42"/>
+                    <circle cx="125" cy="86" r="3" fill="#FFFFFF"/>
+                    <!-- Paws waving -->
+                    <circle cx="40" cy="140" r="16" fill="#F4A261" class="animate-bounce"/>
+                    <circle cx="160" cy="140" r="16" fill="#F4A261"/>
+                    <!-- Small Heart Held -->
+                    <path d="M100 148 C90 135 70 145 70 160 C70 175 100 190 100 190 C100 190 130 175 130 160 C130 145 110 135 100 148 Z" fill="#E63946" class="animate-pulse"/>
+                </svg>
+            </div>
+
+            <div class="space-y-4">
+                <h2 class="text-2xl md:text-3xl font-bold text-pink-100 font-cursive text-4xl">Hello Beautiful!</h2>
+                <p class="text-xl md:text-2xl font-bold text-pink-300 leading-relaxed px-2">
+                    "Welcome Ashley, Sanju has been waiting for you"
+                </p>
+                <p class="text-pink-100/70 text-sm">He prepared a cute surprise just for you ✨</p>
+                
+                <button onclick="goToScreen(4)" class="mt-6 px-8 py-4 bg-gradient-to-r from-pink-500 via-rose-500 to-yellow-500 hover:from-pink-600 hover:to-yellow-600 text-white font-bold rounded-2xl shadow-xl hover:shadow-yellow-500/30 transition-all transform hover:scale-105 active:scale-95 text-lg">
+                    Next Surprise <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 4: Bouquet of Yellow Roses -->
+        <section id="screen-4" class="w-full glass-card rounded-3xl p-6 md:p-8 text-center hidden transition-all duration-700 ease-in-out transform">
+            <div class="relative w-72 h-80 md:w-80 md:h-96 mx-auto mb-3 animate-float animate-glow">
+                <svg viewBox="0 0 400 480" class="w-full h-full filter drop-shadow-2xl overflow-visible">
+                    <defs>
+                        <radialGradient id="roseYellowCore" cx="45%" cy="40%" r="60%">
+                            <stop offset="0%" stop-color="#FFE838"/>
+                            <stop offset="50%" stop-color="#FCD34D"/>
+                            <stop offset="85%" stop-color="#F59E0B"/>
+                            <stop offset="100%" stop-color="#D97706"/>
+                        </radialGradient>
+
+                        <radialGradient id="roseYellowOuter" cx="40%" cy="30%" r="70%">
+                            <stop offset="0%" stop-color="#FFFBEB"/>
+                            <stop offset="40%" stop-color="#FEF08A"/>
+                            <stop offset="80%" stop-color="#FBBF24"/>
+                            <stop offset="100%" stop-color="#D97706"/>
+                        </radialGradient>
+
+                        <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#34D399"/>
+                            <stop offset="50%" stop-color="#059669"/>
+                            <stop offset="100%" stop-color="#064E3B"/>
+                        </linearGradient>
+
+                        <linearGradient id="wrapperGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FFF1F2"/>
+                            <stop offset="60%" stop-color="#FFE4E6"/>
+                            <stop offset="100%" stop-color="#FDA4AF"/>
+                        </linearGradient>
+
+                        <linearGradient id="goldRibbon" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#FBBF24"/>
+                            <stop offset="50%" stop-color="#FEF08A"/>
+                            <stop offset="100%" stop-color="#D97706"/>
+                        </linearGradient>
+
+                        <filter id="petalShadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="1" dy="3" stdDeviation="3" flood-color="#78350F" flood-opacity="0.3"/>
+                        </filter>
+                    </defs>
+
+                    <!-- REAR BOUQUET WRAPPING & STEMS -->
+                    <g id="wrapping-back">
+                        <path d="M170 340 L190 450 L210 450 L230 340 Z" fill="#14532D" opacity="0.9"/>
+                        <path d="M100 240 L40 120 C100 60 300 60 360 120 L300 240 L250 380 L150 380 Z" fill="url(#wrapperGrad)" filter="url(#petalShadow)" opacity="0.95"/>
+                        <path d="M40 120 Q120 180 200 130 Q280 180 360 120" stroke="#F43F5E" stroke-width="2" fill="none" opacity="0.4"/>
+                    </g>
+
+                    <!-- LEAF LAYER -->
+                    <g id="leaf-layer">
+                        <path d="M110 220 C60 190 40 130 90 110 C130 140 130 190 110 220 Z" fill="url(#leafGrad)" filter="url(#petalShadow)"/>
+                        <path d="M100 210 Q90 160 80 125 M95 180 Q80 170 70 175 M97 150 Q85 140 75 145" stroke="#10B981" stroke-width="1.5" fill="none" opacity="0.7"/>
+
+                        <path d="M290 220 C340 190 360 130 310 110 C270 140 270 190 290 220 Z" fill="url(#leafGrad)" filter="url(#petalShadow)"/>
+                        <path d="M300 210 Q310 160 320 125 M305 180 Q320 170 330 175 M303 150 Q315 140 325 145" stroke="#10B981" stroke-width="1.5" fill="none" opacity="0.7"/>
+
+                        <path d="M170 110 C160 50 240 50 230 110 Z" fill="url(#leafGrad)"/>
+                        <path d="M200 105 L200 60" stroke="#10B981" stroke-width="1.5" fill="none" opacity="0.6"/>
+                    </g>
+
+                    <!-- ROSES -->
+                    <g transform="translate(200, 130) scale(0.85)" filter="url(#petalShadow)">
+                        <path d="M-50 -10 C-60 -50 0 -70 50 -50 C70 -10 40 50 -10 50 C-50 40 -60 10 -50 -10 Z" fill="url(#roseYellowOuter)"/>
+                        <path d="M-40 -40 Q0 -65 40 -40 Q55 0 30 35 Q-20 45 -40 20 Z" fill="url(#roseYellowCore)"/>
+                        <path d="M-30 -25 C-15 -45 15 -45 30 -25 C40 5 20 30 -5 30 C-25 25 -35 0 -30 -25 Z" fill="url(#roseYellowOuter)"/>
+                        <path d="M-20 -15 C-10 -30 10 -30 20 -15 C25 5 10 20 -5 20 C-20 15 -25 0 -20 -15 Z" fill="url(#roseYellowCore)"/>
+                        <path d="M-10 -5 Q0 -20 10 -5 Q12 10 -2 12 Q-12 8 -10 -5 Z" fill="#D97706"/>
+                        <path d="M-5 -2 Q0 -10 5 -2 Q6 5 -1 6 Z" fill="#FEF08A"/>
+                    </g>
+
+                    <g transform="translate(130, 160) rotate(-15) scale(0.9)" filter="url(#petalShadow)">
+                        <path d="M-55 0 C-65 -45 5 -65 50 -35 C65 10 30 55 -20 45 C-55 30 -60 15 -55 0 Z" fill="url(#roseYellowOuter)"/>
+                        <path d="M-40 -30 C-20 -55 25 -45 35 -15 C45 20 10 35 -20 30 C-40 20 -45 -10 -40 -30 Z" fill="url(#roseYellowCore)"/>
+                        <path d="M-25 -15 C-10 -35 15 -30 20 -10 C25 15 5 25 -15 20 C-25 10 -30 -5 -25 -15 Z" fill="url(#roseYellowOuter)"/>
+                        <path d="M-12 -8 Q0 -22 12 -8 Q12 12 -2 12 Z" fill="#D97706"/>
+                        <path d="M-5 -3 Q0 -12 5 -3 Z" fill="#FFFBEB"/>
+                    </g>
+
+                    <g transform="translate(270, 160) rotate(15) scale(0.9)" filter="url(#petalShadow)">
+                        <path d="M-50 -35 C-5 -65 65 -45 55 0 C45 35 -30 55 -55 15 C-60 -10 -50 -25 -50 -35 Z" fill="url(#roseYellowOuter)"/>
+                        <path d="M-35 -25 C-10 -45 40 -35 30 0 C20 25 -25 35 -35 10 Z" fill="url(#roseYellowCore)"/>
+                        <path d="M-20 -15 C-5 -30 25 -20 15 5 C5 20 -15 20 -20 -5 Z" fill="url(#roseYellowOuter)"/>
+                        <path d="M-10 -8 Q0 -20 10 -8 Q8 10 -4 10 Z" fill="#D97706"/>
+                        <path d="M-4 -3 Q0 -10 4 -3 Z" fill="#FFFBEB"/>
+                    </g>
+
+                    <g transform="translate(200, 215) scale(1.15)" filter="url(#petalShadow)">
+                        <path d="M-55 -15 C-70 -50 0 -75 55 -50 C75 -10 50 60 -10 55 C-55 50 -65 15 -55 -15 Z" fill="url(#roseYellowOuter)"/>
+                        <path d="M-45 25 C-60 -10 -30 -55 10 -50 C50 -45 60 10 35 45 C10 60 -30 50 -45 25 Z" fill="url(#roseYellowCore)"/>
+                        <path d="M-35 -30 C-15 -50 25 -45 35 -20 C45 10 20 35 -15 30 C-35 20 -40 -10 -35 -30 Z" fill="url(#roseYellowOuter)"/>
+                        <path d="M-25 -20 C-10 -35 15 -35 25 -15 C30 10 10 25 -10 20 C-25 15 -30 0 -25 -20 Z" fill="url(#roseYellowCore)"/>
+                        <path d="M-15 -12 C-5 -25 12 -22 18 -8 C22 8 5 18 -8 15 C-18 8 -18 -4 -15 -12 Z" fill="url(#roseYellowOuter)"/>
+                        <path d="M-8 -5 C-2 -16 8 -15 10 -4 C12 6 0 10 -6 8 C-10 4 -10 -2 -8 -5 Z" fill="#B45309"/>
+                        <path d="M-4 -2 C0 -10 5 -9 6 -2 C7 4 0 6 -3 5 Z" fill="#FEF08A"/>
+                        <ellipse cx="-25" cy="20" rx="3" ry="2" fill="#FFFFFF" opacity="0.8"/>
+                        <circle cx="-24" cy="19.5" r="1" fill="#FEF08A"/>
+                    </g>
+
+                    <!-- WRAPPING & RIBBON -->
+                    <g id="wrapping-front" filter="url(#petalShadow)">
+                        <path d="M110 270 L195 380 L130 380 Z" fill="#FFE4E6"/>
+                        <path d="M290 270 L205 380 L270 380 Z" fill="#FECDD3"/>
+                        <path d="M130 260 L200 380 L270 260 L200 290 Z" fill="url(#wrapperGrad)"/>
+
+                        <path d="M150 350 C120 330 110 370 150 380 C180 385 190 360 200 365 C210 360 220 385 250 380 C290 370 280 330 250 350 C210 365 205 355 200 355 C195 355 190 365 150 350 Z" fill="url(#goldRibbon)"/>
+                        <ellipse cx="200" cy="362" rx="14" ry="10" fill="#D97706"/>
+                        <ellipse cx="200" cy="362" rx="10" ry="7" fill="url(#goldRibbon)"/>
+                        <path d="M192 370 Q170 420 150 440 L170 445 Q195 420 198 372 Z" fill="url(#goldRibbon)"/>
+                        <path d="M208 370 Q230 420 250 440 L230 445 Q205 420 202 372 Z" fill="url(#goldRibbon)"/>
+                    </g>
+
+                    <!-- SPARKLES -->
+                    <g id="sparkles">
+                        <path class="animate-sparkle" d="M90 100 L93 110 L103 113 L93 116 L90 126 L87 116 L77 113 L87 110 Z" fill="#FFFBEB"/>
+                        <path class="animate-sparkle" style="animation-delay: 0.7s;" d="M310 90 L313 100 L323 103 L313 106 L310 116 L307 106 L297 103 L307 100 Z" fill="#FEF08A"/>
+                        <path class="animate-sparkle" style="animation-delay: 1.3s;" d="M200 60 L202 67 L209 69 L202 71 L200 78 L198 71 L191 69 L198 67 Z" fill="#FFFFFF"/>
+                        <path class="animate-sparkle" style="animation-delay: 1.8s;" d="M320 250 L322 255 L327 257 L322 259 L320 264 L318 259 L313 257 L318 255 Z" fill="#FBBF24"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="space-y-4">
+                <h3 class="text-2xl md:text-3xl font-bold text-yellow-300 font-cursive text-4xl">For my baby girl</h3>
+                <p class="text-lg md:text-xl font-medium text-pink-100 leading-relaxed px-2">
+                    Pretty flowers for a pretty girl. Here are some yellow roses, your favorite
+                </p>
+                
+                <button onclick="startMiniGameScreen()" class="mt-4 px-8 py-4 bg-gradient-to-r from-yellow-400 via-pink-500 to-rose-600 hover:from-yellow-500 hover:to-rose-700 text-white font-bold rounded-2xl shadow-xl hover:shadow-pink-500/40 transition-all transform hover:scale-105 active:scale-95 text-lg flex items-center justify-center mx-auto space-x-2">
+                    <i class="fa-solid fa-gamepad text-xl"></i>
+                    <span>Let's Play a Game!</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 5: Pacman Mini Game Section & Victory Kiss Scene -->
+        <section id="screen-5" class="w-full glass-card rounded-3xl p-4 md:p-6 text-center hidden transition-all duration-700 ease-in-out transform">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-yellow-300 font-bold font-game text-lg flex items-center">
+                    <i class="fa-solid fa-heart text-pink-400 mr-2"></i> Ashley & Sanju
+                </span>
+                <span id="hearts-count" class="text-pink-300 font-bold font-game text-sm bg-black/40 px-3 py-1 rounded-full border border-pink-500/30">
+                    Hearts: 0 / 0
+                </span>
+            </div>
+
+            <!-- Header message -->
+            <h2 id="game-title-msg" class="text-xl font-bold text-pink-200 mb-2 font-game">Help Girl 'A' collect all hearts for 'S'!</h2>
+
+            <!-- GAME CANVAS CONTAINER -->
+            <div id="game-canvas-container" class="relative w-full flex justify-center items-center my-2">
+                <canvas id="game-canvas" width="360" height="360" class="max-w-full touch-none"></canvas>
+            </div>
+
+            <!-- DEDICATED ANIMATED KISS VICTORY STAGE (Revealed on Game Completion) -->
+            <div id="kiss-victory-container" class="hidden my-4 relative flex flex-col items-center justify-center p-4 bg-black/30 rounded-2xl border-2 border-pink-400/50 shadow-2xl">
+                <!-- Floating Hearts FX Header -->
+                <div class="relative w-full h-12 flex justify-center items-center">
+                    <span class="text-3xl animate-heart-pop absolute">❤️</span>
+                    <span class="text-2xl animate-heart-pop absolute" style="animation-delay: 0.4s; left: 35%;">💖</span>
+                    <span class="text-2xl animate-heart-pop absolute" style="animation-delay: 0.8s; right: 35%;">💕</span>
+                </div>
+
+                <!-- Cute SVG Characters Kissing Scene -->
+                <div class="relative w-72 h-56 mx-auto flex items-center justify-center overflow-visible">
+                    
+                    <!-- GIRL CHARACTER (Ashley) -->
+                    <div class="absolute left-6 animate-kiss-girl z-10">
+                        <svg viewBox="0 0 100 120" class="w-28 h-32 filter drop-shadow-md">
+                            <!-- Body/Outfit -->
+                            <path d="M30 85 L70 85 L80 115 L20 115 Z" fill="#FF4D6D"/>
+                            <!-- Head -->
+                            <circle cx="50" cy="50" r="32" fill="#FFC2D1"/>
+                            <!-- Cute Eyes Closed Kissing -->
+                            <path d="M52 48 Q58 52 64 48" stroke="#2B2D42" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                            <!-- Blushing Cheek -->
+                            <ellipse cx="60" cy="58" rx="7" ry="5" fill="#FF758F" opacity="0.85"/>
+                            <!-- Cute Bow -->
+                            <circle cx="28" cy="25" r="8" fill="#FF8FA3"/>
+                            <circle cx="42" cy="25" r="8" fill="#FF8FA3"/>
+                            <circle cx="35" cy="25" r="5" fill="#FF4D6D"/>
+                            <!-- Pucker Lips -->
+                            <ellipse cx="78" cy="54" rx="6" ry="4" fill="#E63946"/>
+                            <!-- Monogram Badge 'A' -->
+                            <circle cx="50" cy="98" r="9" fill="#FFFBEB"/>
+                            <text x="50" y="102" font-family="Fredoka" font-size="12" font-weight="bold" fill="#FF4D6D" text-anchor="middle">A</text>
+                        </svg>
+                    </div>
+
+                    <!-- KISS SPARKLE & HEART POP CENTER -->
+                    <div class="absolute z-20 flex flex-col items-center animate-pulse">
+                        <span class="text-4xl filter drop-shadow-lg">💋</span>
+                        <span class="text-yellow-300 text-xs font-bold font-game tracking-widest mt-1">Smooch!</span>
+                    </div>
+
+                    <!-- BOY CHARACTER (Sanju) -->
+                    <div class="absolute right-6 animate-kiss-boy z-10">
+                        <svg viewBox="0 0 100 120" class="w-28 h-32 filter drop-shadow-md">
+                            <!-- Body/Shirt -->
+                            <path d="M25 85 L75 85 L82 115 L18 115 Z" fill="#3A86FF"/>
+                            <!-- Head -->
+                            <circle cx="50" cy="50" r="32" fill="#FFE0B2"/>
+                            <!-- Boy Hair -->
+                            <path d="M18 45 C20 20 80 20 82 45 C70 25 30 25 18 45 Z" fill="#4A2810"/>
+                            <!-- Cute Eyes Closed Kissing -->
+                            <path d="M36 48 Q42 52 48 48" stroke="#2B2D42" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                            <!-- Blushing Cheek -->
+                            <ellipse cx="40" cy="58" rx="7" ry="5" fill="#FFB5A7" opacity="0.85"/>
+                            <!-- Pucker Lips -->
+                            <ellipse cx="22" cy="54" rx="6" ry="4" fill="#E63946"/>
+                            <!-- Monogram Badge 'S' -->
+                            <circle cx="50" cy="98" r="9" fill="#FFFBEB"/>
+                            <text x="50" y="102" font-family="Fredoka" font-size="12" font-weight="bold" fill="#3A86FF" text-anchor="middle">S</text>
+                        </svg>
+                    </div>
+
+                </div>
+
+                <!-- Sweet Victory Message -->
+                <div class="mt-2 space-y-1">
+                    <h3 class="text-3xl font-bold text-yellow-300 font-cursive">Congratulations, you won the Grand Prize 🎉</h3>
+                    <p class="text-sm font-medium text-pink-200">You completed the maze with all my love! 💕</p>
+                    
+                    <button onclick="goToScreen(6)" class="mt-4 px-8 py-3 bg-gradient-to-r from-yellow-400 via-pink-500 to-rose-600 hover:from-yellow-500 hover:to-rose-700 text-white font-bold rounded-2xl shadow-xl hover:shadow-pink-500/40 transition-all transform hover:scale-105 active:scale-95 text-lg flex items-center justify-center mx-auto space-x-2">
+                        <span>Claim Your Prize</span>
+                        <i class="fa-solid fa-gift text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Touch / On-screen D-Pad Controls for Mobile -->
+            <div id="touch-controls" class="mt-4 md:hidden flex flex-col items-center gap-2">
+                <button onpointerdown="triggerMove('UP')" class="w-12 h-12 bg-pink-500/40 border border-pink-300 rounded-xl active:bg-pink-600 flex items-center justify-center text-xl font-bold text-white shadow-lg">▲</button>
+                <div class="flex gap-4">
+                    <button onpointerdown="triggerMove('LEFT')" class="w-12 h-12 bg-pink-500/40 border border-pink-300 rounded-xl active:bg-pink-600 flex items-center justify-center text-xl font-bold text-white shadow-lg">◀</button>
+                    <button onpointerdown="triggerMove('DOWN')" class="w-12 h-12 bg-pink-500/40 border border-pink-300 rounded-xl active:bg-pink-600 flex items-center justify-center text-xl font-bold text-white shadow-lg">▼</button>
+                    <button onpointerdown="triggerMove('RIGHT')" class="w-12 h-12 bg-pink-500/40 border border-pink-300 rounded-xl active:bg-pink-600 flex items-center justify-center text-xl font-bold text-white shadow-lg">▶</button>
+                </div>
+            </div>
+
+            <p id="desktop-hint" class="text-xs text-pink-200/60 mt-3 hidden md:block">Use Arrow Keys or WASD to navigate</p>
+
+            <!-- Replay Button (Hidden until victory) -->
+            <button id="replay-btn" onclick="resetGame()" class="hidden mt-4 px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-xl transition-all shadow-lg text-sm mx-auto">
+                <i class="fa-solid fa-rotate-right mr-2"></i> Play Game Again
+            </button>
+        </section>
+
+        <!-- SCREEN 6: Grand Prize Options Checklist -->
+        <section id="screen-6" class="w-full glass-card rounded-3xl p-6 md:p-8 text-center hidden transition-all duration-700 ease-in-out transform">
+            <div class="mb-3 inline-block p-4 rounded-full bg-yellow-400/20 text-yellow-300 animate-bounce-gentle">
+                <i class="fa-solid fa-crown text-4xl"></i>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-yellow-300 font-cursive mb-2">Grand Prize Selection</h2>
+            <p class="text-pink-100 text-sm md:text-base leading-relaxed mb-4 max-w-lg mx-auto font-medium">
+                The Grand Prize is applicable every day for the next 60 years. Please check off all of the prizes you would like to be included:
+            </p>
+
+            <div class="flex justify-end mb-3">
+                <button onclick="toggleSelectAllPrizes()" class="text-xs font-semibold px-3 py-1.5 bg-yellow-400/20 hover:bg-yellow-400/30 text-yellow-200 rounded-lg border border-yellow-400/40 transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-check-double"></i>
+                    <span id="select-all-btn-label">Select All Prizes</span>
+                </button>
+            </div>
+
+            <!-- Scrollable Checklist Grid -->
+            <div class="max-h-80 overflow-y-auto pr-2 space-y-2.5 text-left custom-scrollbar mb-6" id="prize-checklist-container">
+                <!-- Dynamic Prize List Items -->
+            </div>
+
+            <button onclick="confirmLifetimePass()" class="w-full py-4 bg-gradient-to-r from-yellow-400 via-pink-500 to-rose-600 hover:from-yellow-500 hover:to-rose-700 text-white font-bold rounded-2xl shadow-xl hover:shadow-yellow-500/30 transition-all transform active:scale-95 text-lg flex items-center justify-center space-x-2">
+                <span>Claim My Lifetime Pass 💖</span>
+                <i class="fa-solid fa-certificate"></i>
+            </button>
+        </section>
+
+        <!-- SCREEN 7: Final Lifetime Pass Voucher Confirmation -->
+        <section id="screen-7" class="w-full glass-card rounded-3xl p-6 md:p-8 text-center hidden transition-all duration-700 ease-in-out transform border-2 border-yellow-400/60 shadow-2xl relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-400/10 rounded-full blur-2xl"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-pink-500/10 rounded-full blur-2xl"></div>
+
+            <div class="mb-2 inline-block p-4 rounded-full bg-rose-500/20 text-rose-300 animate-pulse">
+                <i class="fa-solid fa-certificate text-5xl text-yellow-300"></i>
+            </div>
+
+            <h2 class="text-3xl md:text-5xl font-bold text-yellow-300 font-cursive mb-1">Official Lifetime Pass</h2>
+            <p class="text-xs tracking-widest uppercase text-pink-300 font-semibold mb-4">Valid 2026 — 2086 (60 Years of Love)</p>
+
+            <div class="p-4 bg-black/40 rounded-2xl border border-pink-500/30 mb-6 text-left space-y-3">
+                <div class="flex justify-between items-center border-b border-pink-500/20 pb-2">
+                    <span class="text-xs text-pink-300/80">Issued To:</span>
+                    <span class="text-sm font-bold text-yellow-200">Ashley Josephine Thomas</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-pink-500/20 pb-2">
+                    <span class="text-xs text-pink-300/80">Issued By:</span>
+                    <span class="text-sm font-bold text-pink-200">Sanju John</span>
+                </div>
+                <div class="flex justify-between items-start pt-1">
+                    <span class="text-xs text-pink-300/80">Active Services:</span>
+                    <span id="active-prizes-count" class="text-xs font-bold text-yellow-300 bg-yellow-500/20 px-2 py-0.5 rounded-full border border-yellow-400/30">0 / 19 Included</span>
+                </div>
+            </div>
+
+            <div class="space-y-2 mb-6">
+                <p class="text-lg md:text-xl font-bold text-pink-100 font-cursive">"I Love You Ashley Forever & Always" ❤</p>
+                <p class="text-xs text-pink-200/80 italic">Signed and sealed with infinite hugs, kisses, and love.</p>
+            </div>
+
+            <button onclick="goToScreen(6)" class="px-6 py-3 bg-pink-500/30 hover:bg-pink-500/50 text-pink-200 font-semibold rounded-xl border border-pink-400/30 transition-all text-sm">
+                <i class="fa-solid fa-pen-to-square mr-1.5"></i> Adjust Prize Choices
+            </button>
+        </section>
+
+    </main>
+
+    <script>
+        /* ===================================================
+         * 1. BACKGROUND FLOATING HEARTS CANVAS LOGIC
+         * =================================================== */
+        const bgCanvas = document.getElementById('bg-canvas');
+        const bgCtx = bgCanvas.getContext('2d');
+
+        let bgWidth = bgCanvas.width = window.innerWidth;
+        let bgHeight = bgCanvas.height = window.innerHeight;
+
+        const heartColors = [
+            'rgba(255, 182, 193, ',  /* Light Pink */
+            'rgba(255, 105, 180, ',  /* Hot Pink */
+            'rgba(255, 215, 0, ',    /* Soft Gold/Yellow */
+            'rgba(244, 114, 182, ',  /* Rose */
+            'rgba(235, 87, 87, '     /* Deep Red Pink */
+        ];
+
+        class HeartParticle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * bgWidth;
+                this.y = bgHeight + Math.random() * 100;
+                this.size = Math.random() * 18 + 8;
+                this.speedY = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.sin(Math.random() * Math.PI) * 0.8;
+                this.colorPrefix = heartColors[Math.floor(Math.random() * heartColors.length)];
+                this.alpha = Math.random() * 0.6 + 0.3;
+                this.angle = Math.random() * 360;
+                this.angularVelocity = (Math.random() - 0.5) * 0.02;
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.x += Math.sin(this.y * 0.01) * 0.8;
+                this.angle += this.angularVelocity;
+
+                if (this.y < -30) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                bgCtx.save();
+                bgCtx.translate(this.x, this.y);
+                bgCtx.rotate(this.angle);
+                bgCtx.fillStyle = this.colorPrefix + this.alpha + ')';
+                bgCtx.shadowBlur = 12;
+                bgCtx.shadowColor = this.colorPrefix + '0.8)';
+
+                bgCtx.beginPath();
+                const topCurveHeight = this.size * 0.3;
+                bgCtx.moveTo(0, topCurveHeight);
+                bgCtx.bezierCurveTo(
+                    -this.size / 2, -topCurveHeight,
+                    -this.size, this.size / 3,
+                    0, this.size
+                );
+                bgCtx.bezierCurveTo(
+                    this.size, this.size / 3,
+                    this.size / 2, -topCurveHeight,
+                    0, topCurveHeight
+                );
+                bgCtx.closePath();
+                bgCtx.fill();
+                bgCtx.restore();
+            }
+        }
+
+        let bgHearts = [];
+        function initBgHearts() {
+            bgHearts = [];
+            const count = Math.min(Math.floor(bgWidth / 20), 45);
+            for (let i = 0; i < count; i++) {
+                const heart = new HeartParticle();
+                heart.y = Math.random() * bgHeight;
+                bgHearts.push(heart);
+            }
+        }
+        initBgHearts();
+
+        /* ===================================================
+         * 2. FALLING ROSE PETALS CANVAS LOGIC
+         * =================================================== */
+        const petalsCanvas = document.getElementById('petals-canvas');
+        const petalsCtx = petalsCanvas.getContext('2d');
+
+        let petalsWidth = petalsCanvas.width = window.innerWidth;
+        let petalsHeight = petalsCanvas.height = window.innerHeight;
+
+        class PetalParticle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * petalsWidth;
+                this.y = -20;
+                this.size = Math.random() * 10 + 8;
+                this.speedY = Math.random() * 1.2 + 0.8;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.03;
+                this.color = '#FEF08A';
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += Math.sin(this.y * 0.02) * 1.2 + this.speedX;
+                this.rotation += this.rotationSpeed;
+
+                if (this.y > petalsHeight + 20) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                petalsCtx.save();
+                petalsCtx.translate(this.x, this.y);
+                petalsCtx.rotate(this.rotation);
+                petalsCtx.fillStyle = this.color;
+                petalsCtx.shadowBlur = 8;
+                petalsCtx.shadowColor = 'rgba(255, 234, 0, 0.5)';
+
+                petalsCtx.beginPath();
+                petalsCtx.ellipse(0, 0, this.size, this.size / 1.8, 0, 0, Math.PI * 2);
+                petalsCtx.fill();
+                petalsCtx.restore();
+            }
+        }
+
+        let petals = [];
+        let renderPetals = false;
+
+        function initPetals() {
+            petals = [];
+            for (let i = 0; i < 30; i++) {
+                petals.push(new PetalParticle());
+            }
+        }
+        initPetals();
+
+        /* Combined Animation Loop */
+        function renderLoop() {
+            bgCtx.clearRect(0, 0, bgWidth, bgHeight);
+            bgHearts.forEach(h => {
+                h.update();
+                h.draw();
+            });
+
+            petalsCtx.clearRect(0, 0, petalsWidth, petalsHeight);
+            if (renderPetals) {
+                petals.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+            }
+
+            requestAnimationFrame(renderLoop);
+        }
+        renderLoop();
+
+        window.addEventListener('resize', () => {
+            bgWidth = bgCanvas.width = window.innerWidth;
+            bgHeight = bgCanvas.height = window.innerHeight;
+            petalsWidth = petalsCanvas.width = window.innerWidth;
+            petalsHeight = petalsCanvas.height = window.innerHeight;
+            initBgHearts();
+            initPetals();
+        });
+
+        /* ===================================================
+         * 3. NAVIGATION & SCREEN VALIDATION LOGIC
+         * =================================================== */
+        function goToScreen(screenNum) {
+            for (let i = 1; i <= 7; i++) {
+                const sc = document.getElementById(`screen-${i}`);
+                if (sc) {
+                    sc.classList.add('hidden');
+                }
+            }
+
+            const targetScreen = document.getElementById(`screen-${screenNum}`);
+            if (targetScreen) {
+                targetScreen.classList.remove('hidden');
+            }
+
+            if (screenNum >= 4) {
+                renderPetals = true;
+            } else {
+                renderPetals = false;
+            }
+        }
+
+        function checkName() {
+            const input = document.getElementById('name-input');
+            const errorEl = document.getElementById('error-1');
+            if (!input || !errorEl) return;
+
+            const cleanVal = input.value.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (cleanVal === 'ashley josephine thomas') {
+                errorEl.style.opacity = '0';
+                input.classList.remove('animate-shake');
+                startRomanticMusic();
+                goToScreen(2);
+            } else {
+                errorEl.innerText = 'Incorrect, please enter full name';
+                errorEl.style.opacity = '1';
+                
+                input.classList.remove('animate-shake');
+                void input.offsetWidth;
+                input.classList.add('animate-shake');
+            }
+        }
+
+        function checkLove() {
+            const input = document.getElementById('love-input');
+            const errorEl = document.getElementById('error-2');
+            if (!input || !errorEl) return;
+
+            const cleanVal = input.value.trim().replace(/\s+/g, ' ').toLowerCase();
+
+            if (cleanVal === 'sanju john') {
+                errorEl.style.opacity = '0';
+                input.classList.remove('animate-shake');
+                goToScreen(3);
+            } else {
+                errorEl.innerText = 'Incorrect';
+                errorEl.style.opacity = '1';
+
+                input.classList.remove('animate-shake');
+                void input.offsetWidth;
+                input.classList.add('animate-shake');
+            }
+        }
+
+        /* ===================================================
+         * 4. GRAND PRIZE CHECKLIST LOGIC
+         * =================================================== */
+        const prizeOptions = [
+            "Unlimited Kisses",
+            "Unlimited Hugs",
+            "Unlimited Cuddles",
+            "Unlimited Laughs",
+            "Unlimited \"I Love You\"",
+            "Unlimited yap sessions",
+            "Unlimited Coconut Oil Head Massage Services",
+            "Unlimited Chef Services",
+            "Unlimited Grocery Shopping Services",
+            "Unlimited Positive Affirmations",
+            "Unlimited Words of Encouragement",
+            "Unlimited Emotional Support",
+            "Unlimited In and Out Cravings PickUps Services",
+            "Unlimited Tuesday Evening Movie Partner Services",
+            "Unlimited Travel Partner Services",
+            "Unlimited Hiking Partner Services",
+            "Unlimited Gilmore Girl Watching Partner Services",
+            "Unlimited Carpool Lane Driving Services",
+            "Unlimited Ice Cream Whenever You Want Services"
+        ];
+
+        let selectedPrizes = new Set();
+
+        function renderPrizeChecklist() {
+            const container = document.getElementById('prize-checklist-container');
+            if (!container) return;
+
+            container.innerHTML = prizeOptions.map((prize) => {
+                const isChecked = selectedPrizes.has(prize);
+                const safePrize = prize.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                return `
+                    <label onclick="togglePrize('${safePrize}')" class="flex items-center space-x-3 p-3 rounded-xl bg-black/30 border ${isChecked ? 'border-yellow-400/70 bg-yellow-500/10' : 'border-pink-500/20'} cursor-pointer hover:bg-pink-500/20 transition-all">
+                        <div class="w-6 h-6 rounded-lg flex items-center justify-center border ${isChecked ? 'bg-gradient-to-r from-yellow-400 to-pink-500 border-yellow-300 text-white' : 'border-pink-400/50 bg-black/40'} transition-all shrink-0">
+                            ${isChecked ? '<i class="fa-solid fa-heart text-xs"></i>' : ''}
+                        </div>
+                        <span class="text-sm font-medium ${isChecked ? 'text-yellow-100 font-semibold' : 'text-pink-100/80'}">${prize}</span>
+                    </label>
+                `;
+            }).join('');
+
+            const label = document.getElementById('select-all-btn-label');
+            if (label) {
+                label.innerText = selectedPrizes.size === prizeOptions.length ? 'Deselect All' : 'Select All Prizes';
+            }
+        }
+
+        function togglePrize(prize) {
+            const rawPrize = prize.replace(/&quot;/g, '"');
+            if (selectedPrizes.has(rawPrize)) {
+                selectedPrizes.delete(rawPrize);
+            } else {
+                selectedPrizes.add(rawPrize);
+            }
+            renderPrizeChecklist();
+        }
+
+        function toggleSelectAllPrizes() {
+            if (selectedPrizes.size === prizeOptions.length) {
+                selectedPrizes.clear();
+            } else {
+                selectedPrizes = new Set(prizeOptions);
+            }
+            renderPrizeChecklist();
+        }
+
+        function confirmLifetimePass() {
+            const countEl = document.getElementById('active-prizes-count');
+            if (countEl) {
+                countEl.innerText = `${selectedPrizes.size} / ${prizeOptions.length} Included`;
+            }
+            goToScreen(7);
+        }
+
+        /* ===================================================
+         * 5. PACMAN MINI-GAME LOGIC (EASY MODE)
+         * =================================================== */
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+
+        const GRID_SIZE = 12;
+        const CELL_SIZE = 30;
+
+        const originalMaze = [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+            [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1],
+            [1, 1, 1, 0, 1, 2, 2, 1, 0, 1, 1, 1],
+            [1, 1, 1, 0, 1, 2, 2, 1, 0, 1, 1, 1],
+            [1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ];
+
+        let maze = [];
+        let totalHearts = 0;
+        let heartsCollected = 0;
+        let gameActive = false;
+
+        let player = { x: 1, y: 1, dirX: 0, dirY: 0, nextDirX: 0, nextDirY: 0 };
+        let boyS = { x: 6, y: 6 };
+
+        function startMiniGameScreen() {
+            goToScreen(5);
+            resetGame();
+        }
+
+        function resetGame() {
+            maze = originalMaze.map(row => [...row]);
+            
+            totalHearts = 0;
+            heartsCollected = 0;
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    if (maze[r][c] === 0) totalHearts++;
+                }
+            }
+
+            player.x = 1;
+            player.y = 1;
+            player.dirX = 0;
+            player.dirY = 0;
+            player.nextDirX = 0;
+            player.nextDirY = 0;
+
+            gameActive = true;
+
+            document.getElementById('game-canvas-container').classList.remove('hidden');
+            document.getElementById('touch-controls').classList.remove('hidden');
+            document.getElementById('desktop-hint').classList.remove('hidden');
+            document.getElementById('kiss-victory-container').classList.add('hidden');
+            document.getElementById('replay-btn').classList.add('hidden');
+            document.getElementById('game-title-msg').classList.remove('hidden');
+            document.getElementById('game-title-msg').innerText = "Help Girl 'A' collect all hearts for 'S'!";
+
+            updateHeartsUI();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function updateHeartsUI() {
+            const el = document.getElementById('hearts-count');
+            if (el) el.innerText = `Hearts: ${heartsCollected} / ${totalHearts}`;
+        }
+
+        function triggerMove(dir) {
+            if (!gameActive) return;
+            if (dir === 'UP') { player.nextDirX = 0; player.nextDirY = -1; }
+            if (dir === 'DOWN') { player.nextDirX = 0; player.nextDirY = 1; }
+            if (dir === 'LEFT') { player.nextDirX = -1; player.nextDirY = 0; }
+            if (dir === 'RIGHT') { player.nextDirX = 1; player.nextDirY = 0; }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (!gameActive) return;
+            if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') triggerMove('UP');
+            if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') triggerMove('DOWN');
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') triggerMove('LEFT');
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') triggerMove('RIGHT');
+        });
+
+        let lastFrameTime = 0;
+        const moveInterval = 180;
+
+        function updateGameLogic(timestamp) {
+            if (!gameActive) return;
+
+            if (timestamp - lastFrameTime > moveInterval) {
+                lastFrameTime = timestamp;
+
+                const nextX = player.x + player.nextDirX;
+                const nextY = player.y + player.nextDirY;
+
+                if (maze[nextY] && maze[nextY][nextX] !== 1) {
+                    player.dirX = player.nextDirX;
+                    player.dirY = player.nextDirY;
+                }
+
+                const newX = player.x + player.dirX;
+                const newY = player.y + player.dirY;
+
+                if (maze[newY] && maze[newY][newX] !== 1) {
+                    player.x = newX;
+                    player.y = newY;
+                }
+
+                if (maze[player.y][player.x] === 0) {
+                    maze[player.y][player.x] = 2;
+                    heartsCollected++;
+                    updateHeartsUI();
+
+                    if (heartsCollected >= totalHearts) {
+                        triggerVictory();
+                    }
+                }
+            }
+        }
+
+        function triggerVictory() {
+            gameActive = false;
+
+            setTimeout(() => {
+                document.getElementById('game-canvas-container').classList.add('hidden');
+                document.getElementById('touch-controls').classList.add('hidden');
+                document.getElementById('desktop-hint').classList.add('hidden');
+                document.getElementById('kiss-victory-container').classList.remove('hidden');
+                document.getElementById('replay-btn').classList.remove('hidden');
+                document.getElementById('game-title-msg').classList.add('hidden');
+            }, 600);
+        }
+
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    const cell = maze[r][c];
+                    const px = c * CELL_SIZE;
+                    const py = r * CELL_SIZE;
+
+                    if (cell === 1) {
+                        ctx.fillStyle = '#8B1E3F';
+                        ctx.shadowBlur = 4;
+                        ctx.shadowColor = '#F472B6';
+                        ctx.beginPath();
+                        ctx.roundRect(px + 2, py + 2, CELL_SIZE - 4, CELL_SIZE - 4, 6);
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                    } else if (cell === 0) {
+                        ctx.save();
+                        ctx.translate(px + CELL_SIZE / 2, py + CELL_SIZE / 2);
+                        ctx.fillStyle = '#FF4D6D';
+                        ctx.shadowBlur = 8;
+                        ctx.shadowColor = '#FF758F';
+
+                        const hSize = 7;
+                        ctx.beginPath();
+                        ctx.moveTo(0, hSize / 2);
+                        ctx.bezierCurveTo(-hSize, -hSize / 2, -hSize * 1.3, hSize, 0, hSize * 1.5);
+                        ctx.bezierCurveTo(hSize * 1.3, hSize, hSize, -hSize / 2, 0, hSize / 2);
+                        ctx.fill();
+                        ctx.restore();
+                    }
+                }
+            }
+
+            // Draw Boy Character 'S'
+            const boyPx = boyS.x * CELL_SIZE + CELL_SIZE / 2;
+            const boyPy = boyS.y * CELL_SIZE + CELL_SIZE / 2;
+
+            ctx.save();
+            ctx.translate(boyPx, boyPy);
+            ctx.fillStyle = '#3A86FF';
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#00F0FF';
+            ctx.beginPath();
+            ctx.arc(0, 0, CELL_SIZE / 2 - 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 14px Fredoka, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('S', 0, 1);
+            ctx.restore();
+
+            // Draw Girl Character 'A'
+            const girlPx = player.x * CELL_SIZE + CELL_SIZE / 2;
+            const girlPy = player.y * CELL_SIZE + CELL_SIZE / 2;
+
+            ctx.save();
+            ctx.translate(girlPx, girlPy);
+            ctx.fillStyle = '#FF007F';
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = '#FF69B4';
+            ctx.beginPath();
+            ctx.arc(0, 0, CELL_SIZE / 2 - 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#FFD1DC';
+            ctx.beginPath();
+            ctx.arc(-5, -CELL_SIZE / 2 + 3, 4, 0, Math.PI * 2);
+            ctx.arc(5, -CELL_SIZE / 2 + 3, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 14px Fredoka, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('A', 0, 1);
+            ctx.restore();
+        }
+
+        function gameLoop(timestamp) {
+            updateGameLogic(timestamp);
+            drawGame();
+
+            if (gameActive) {
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderPrizeChecklist();
+
+            const nameInput = document.getElementById('name-input');
+            const loveInput = document.getElementById('love-input');
+
+            if (nameInput) {
+                nameInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') checkName();
+                });
+            }
+
+            if (loveInput) {
+                loveInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') checkLove();
+                });
+            }
+
+            // Enable music on first user interaction as browser fallback
+            document.body.addEventListener('click', () => {
+                if (!isMusicPlaying) startRomanticMusic();
+            }, { once: true });
+        });
+
+        /* ===================================================
+         * 6. "KISS ME" BY SIXPENCE NONE THE RICHER (YOUTUBE API)
+         * =================================================== */
+        let ytPlayer = null;
+        let isMusicPlaying = false;
+
+        // Load YouTube IFrame API script dynamically
+        (function loadYoutubeAPI() {
+            const tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        })();
+
+        // YouTube API callback when iframe is initialized
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('youtube-player', {
+                height: '0',
+                width: '0',
+                videoId: 'Jnq9wPDoDKg', // "Kiss Me" - Sixpence None The Richer
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'Jnq9wPDoDKg',
+                    'playsinline': 1
+                }
+            });
+        }
+
+        function startRomanticMusic() {
+            isMusicPlaying = true;
+            updateMusicUI();
+            if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+                ytPlayer.playVideo();
+            }
+        }
+
+        function stopRomanticMusic() {
+            isMusicPlaying = false;
+            updateMusicUI();
+            if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+                ytPlayer.pauseVideo();
+            }
+        }
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                stopRomanticMusic();
+            } else {
+                startRomanticMusic();
+            }
+        }
+
+        function updateMusicUI() {
+            const textEl = document.getElementById('music-text');
+            const iconEl = document.getElementById('music-icon');
+            if (!textEl || !iconEl) return;
+
+            if (isMusicPlaying) {
+                textEl.innerText = "Music: ON";
+                iconEl.className = "fa-solid fa-music animate-pulse text-yellow-300";
+            } else {
+                textEl.innerText = "Music: OFF";
+                iconEl.className = "fa-solid fa-volume-xmark text-pink-300/60";
+            }
+        }
+    </script>
+</body>
+</html>
